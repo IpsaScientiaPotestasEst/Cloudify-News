@@ -131,6 +131,7 @@
 
         #uv {
             color: #5a00d9;
+            font-size: 29px !important;
         }
 
         #rain {
@@ -190,14 +191,42 @@
                 const res = await fetch(`http://localhost:5000/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
+
                 document.getElementById("temp").textContent =
                     data.current.temperature + "°C";
 
-                document.getElementById("uv").textContent =
-                    "UV: " + data.hourly.uv[0];
 
+                let uv = 0;
+                if (data.hourly.uv && data.hourly.uv.length > 0) {
+                    uv = data.hourly.uv[0];
+                }
+
+                let uvText = "";
+
+                if (uv === 0) {
+                    uvText = "No light";
+                } else if (uv > 0 && uv <= 2) {
+                    uvText = "Low light";
+                } else if (uv > 2 && uv <= 5) {
+                    uvText = "Moderate light";
+                } else if (uv > 5 && uv <= 7) {
+                    uvText = "High light";
+                } else if (uv > 7 && uv <= 10) {
+                    uvText = "Very high light";
+                } else {
+                    uvText = "Extreme light";
+                }
+
+                document.getElementById("uv").textContent =
+                    uvText;
+
+
+                let rain = 0;
+                if (data.hourly.rain && data.hourly.rain.length > 0) {
+                    rain = data.hourly.rain[0];
+                }
                 document.getElementById("rain").textContent =
-                    "Rain: " + data.hourly.rain[0] + " mm";
+                    "Rain: " + rain + " mm";
             }
 
             catch (err) {
@@ -213,7 +242,7 @@
             loadWeather(latitude, longitude);
         }, err => {
             console.error("Geolocation error:", err);
-            // fallback: Tokanui (your original coords)
+
             loadWeather(-38.1, 175.3);
         });
     </script>
