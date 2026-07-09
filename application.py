@@ -51,6 +51,10 @@ def weather():
         }
     }
 
+@app.route("/ping")
+def ping():
+    return "ok"
+
     return jsonify(result)
 
 if __name__ == "__main__":
