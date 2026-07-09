@@ -193,15 +193,15 @@
                 const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
-           
+
                 let temp = "N/A";
                 if (data.current && typeof data.current.temperature !== "undefined") {
                     temp = data.current.temperature;
                     document.getElementById("temp").textContent = temp + "°C";
-
                 }
+
+                document.getElementById("temp").textContent = temp + "°C";
                 
-              
                 const now = new Date();
                 const nowISO = now.toISOString().slice(0, 13);
 
@@ -213,22 +213,24 @@
                     idx = 0;
                 }
 
-            
+
                 let uv = 0;
-                if (data.hourly && data.hourly.uv && data.hourly.uv.length > idx) {
-                    uv = data.hourly.uv[idx];
+
+               
+                if (data.hourly && data.hourly.radiation && data.hourly.radiation.length > idx) {
+                    uv = data.hourly.radiation[idx] / 100;
                 }
 
                 let uvText = "";
-                if (uv === 0) {
+                if (uv <= 0.2) {
                     uvText = "No light";
-                } else if (uv > 0 && uv <= 2) {
+                } else if (uv <= 2) {
                     uvText = "Low light";
-                } else if (uv > 2 && uv <= 5) {
+                } else if (uv <= 5) {
                     uvText = "Moderate light";
-                } else if (uv > 5 && uv <= 7) {
+                } else if (uv <= 7) {
                     uvText = "High light";
-                } else if (uv > 7 && uv <= 10) {
+                } else if (uv <= 10) {
                     uvText = "Very high light";
                 } else {
                     uvText = "Extreme light";
@@ -236,7 +238,6 @@
 
                 document.getElementById("uv").textContent = uvText;
 
-               
                 let rain = 0;
                 if (data.minutely && data.minutely.rain && data.minutely.rain.length > 0) {
                     rain = data.minutely.rain[0];
