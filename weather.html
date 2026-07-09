@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Cloudify News</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: #1e1f29;
+            overflow: hidden;
+            position: relative;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .ripple {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 1200px;
+            height: 1200px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(0, 150, 255, 1) 0%, rgba(0, 150, 255, 0.5) 40%, transparent 70%);
+            animation: pulse 8s ease-out infinite;
+            pointer-events: none;
+            opacity: 1;
+            filter: blur(2px);
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+
+            65% {
+                transform: translate(-50%, -50%) scale(3.4);
+                opacity: 0.45;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+        }
+
+        #weather-card {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        #time {
+            font-size: 60px;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .circle-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .weather-circle {
+            width: 260px;
+            height: 260px;
+            background: linear-gradient(145deg, #ffffff 0%, #eef3ff 100%);
+            border-radius: 50%;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .weather-circle::before {
+            content: "";
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.75), transparent);
+            border-radius: 50%;
+        }
+
+        .weather-circle::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent);
+            border-radius: 50%;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #3c4a63;
+        }
+
+        .backText {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        #temp {
+            color: #e63946;
+        }
+
+        #uv {
+            color: #5a00d9;
+        }
+
+        #rain {
+            color: #0353d3;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="ripple"></div>
+
+    <div id="weather-card">
+
+        <div id="time"></div>
+
+        <div class="circle-row">
+            <div id="temp-box" class="weather-circle">
+                <div class="section-title">Temperature</div>
+                <div id="temp" class="backText"></div>
+            </div>
+
+            <div id="uv-box" class="weather-circle">
+                <div class="section-title">UV Index</div>
+                <div id="uv" class="backText"></div>
+            </div>
+
+            <div id="rain-box" class="weather-circle">
+                <div class="section-title">Rainfall</div>
+                <div id="rain" class="backText"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            document.body.innerHTML = "<h2>This app is not available on mobile devices.</h2>";
+        }
+
+        function time() {
+            now = new Date();
+            let time = now.toLocaleTimeString("en-NZ", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+            });
+            document.getElementById("time").textContent = time;
+        }
+
+        time();
+
+        async function loadWeather(lat, lon) {
+            try {
+                const res = await fetch(`http://localhost:5000/weather?lat=${lat}&lon=${lon}`);
+                const data = await res.json();
+
+                document.getElementById("temp").textContent =
+                    data.current.temperature + "°C";
+
+                document.getElementById("uv").textContent =
+                    "UV: " + data.hourly.uv[0];
+
+                document.getElementById("rain").textContent =
+                    "Rain: " + data.hourly.rain[0] + " mm";
+            }
+
+            catch (err) {
+                document.getElementById("temp").innerText = "Error";
+                document.getElementById("uv").innerText = "Error";
+                document.getElementById("rain").innerText = "Error";
+            }
+        }
+
+
+        navigator.geolocation.getCurrentPosition(pos => {
+            const { latitude, longitude } = pos.coords;
+            loadWeather(latitude, longitude);
+        }, err => {
+            console.error("Geolocation error:", err);
+            // fallback: Tokanui (your original coords)
+            loadWeather(-38.1, 175.3);
+        });
+    </script>
+
+</body>
+
+</html>
