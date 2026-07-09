@@ -192,7 +192,7 @@
 
         async function loadWeather(lat, lon) {
             try {
-                const res = await fetch(`http://localhost:5000/weather?lat=${lat}&lon=${lon}`);
+                const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
 
@@ -243,7 +243,7 @@
 
         navigator.geolocation.getCurrentPosition(pos => {
             const { latitude, longitude } = pos.coords;
-            loadWeather(latitude, longitude);
+            setInterval(() => {loadWeather(latitude, longitude);},1000)
         }, err => {
             console.error("Geolocation error:", err);
 
