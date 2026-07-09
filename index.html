@@ -249,6 +249,11 @@
 
             loadWeather(-38.1, 175.3);
         });
+
+        setInterval(() => {
+    fetch("https://cloudify-news.onrender.com/ping")
+        .catch(() => {});
+}, 600000);
     </script>
 
 </body>
