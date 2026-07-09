@@ -51,7 +51,7 @@ def weather():
         }
     }
 
-return jsonify(result)
+    return jsonify(result)
 
 @app.route("/ping")
 def ping():
