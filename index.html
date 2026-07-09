@@ -193,16 +193,17 @@
                 const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
-                // temperature (current_weather)
+           
                 let temp = "N/A";
                 if (data.current && typeof data.current.temperature !== "undefined") {
                     temp = data.current.temperature;
-                }
-                document.getElementById("temp").textContent = temp + "°C";
+                    document.getElementById("temp").textContent = temp + "°C";
 
-                // match current hour
+                }
+                
+              
                 const now = new Date();
-                const nowISO = now.toISOString().slice(0, 13); // "YYYY-MM-DDTHH"
+                const nowISO = now.toISOString().slice(0, 13);
 
                 let idx = -1;
                 if (data.hourly && data.hourly.time && data.hourly.time.length > 0) {
@@ -212,7 +213,7 @@
                     idx = 0;
                 }
 
-                // UV (hourly)
+            
                 let uv = 0;
                 if (data.hourly && data.hourly.uv && data.hourly.uv.length > idx) {
                     uv = data.hourly.uv[idx];
@@ -235,7 +236,7 @@
 
                 document.getElementById("uv").textContent = uvText;
 
-                // rain (prefer minutely nowcast, fallback to hourly)
+               
                 let rain = 0;
                 if (data.minutely && data.minutely.rain && data.minutely.rain.length > 0) {
                     rain = data.minutely.rain[0];
