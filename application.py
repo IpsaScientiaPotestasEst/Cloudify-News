@@ -10,13 +10,14 @@ LON = 175.3
 
 @app.route("/weather")
 def weather():
+
     lat = request.args.get("lat", LAT)
     lon = request.args.get("lon", LON)
 
     url_forecast = (
         "https://api.open-meteo.com/v1/forecast"
         f"?latitude={lat}&longitude={lon}"
-        "&hourly=temperature_2m,precipitation,uv_index"
+        "&hourly=temperature_2m,precipitation,shortwave_radiation"
         "&current_weather=true"
         "&timezone=auto"
     )
@@ -42,7 +43,7 @@ def weather():
             "time": hourly.get("time", []),
             "temp": hourly.get("temperature_2m", []),
             "rain": hourly.get("precipitation", []),
-            "uv": hourly.get("uv_index", []),
+            "radiation": hourly.get("shortwave_radiation", []),
         },
         "minutely": {
             "time": nowcast.get("time", []),
