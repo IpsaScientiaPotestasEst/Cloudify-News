@@ -176,37 +176,49 @@
 
         function time() {
             now = new Date();
-            
-                let time = now.toLocaleTimeString("en-NZ", {
+
+            let t = now.toLocaleTimeString("en-NZ", {
                 hour: "numeric",
                 minute: "2-digit",
                 hour12: true
             });
-            document.getElementById("time").textContent = time;
-            
-            
+
+            document.getElementById("time").textContent = t;
         }
 
-        setInterval(() => {time();},1000)
-        
+        setInterval(() => { time(); }, 1000);
 
         async function loadWeather(lat, lon) {
             try {
                 const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
+                // temperature (current_weather)
+                let temp = "N/A";
+                if (data.current && typeof data.current.temperature !== "undefined") {
+                    temp = data.current.temperature;
+                }
+                document.getElementById("temp").textContent = temp + "°C";
 
-                document.getElementById("temp").textContent =
-                    data.current.temperature + "°C";
+                // match current hour
+                const now = new Date();
+                const nowISO = now.toISOString().slice(0, 13); // "YYYY-MM-DDTHH"
 
+                let idx = -1;
+                if (data.hourly && data.hourly.time && data.hourly.time.length > 0) {
+                    idx = data.hourly.time.findIndex(t => t.startsWith(nowISO));
+                }
+                if (idx === -1) {
+                    idx = 0;
+                }
 
+                // UV (hourly)
                 let uv = 0;
-                if (data.hourly.uv && data.hourly.uv.length > 0) {
-                    uv = data.hourly.uv[0];
+                if (data.hourly && data.hourly.uv && data.hourly.uv.length > idx) {
+                    uv = data.hourly.uv[idx];
                 }
 
                 let uvText = "";
-
                 if (uv === 0) {
                     uvText = "No light";
                 } else if (uv > 0 && uv <= 2) {
@@ -221,39 +233,44 @@
                     uvText = "Extreme light";
                 }
 
-                document.getElementById("uv").textContent =
-                    uvText;
+                document.getElementById("uv").textContent = uvText;
 
-
+                // rain (prefer minutely nowcast, fallback to hourly)
                 let rain = 0;
-                if (data.hourly.rain && data.hourly.rain.length > 0) {
-                    rain = data.hourly.rain[0];
+                if (data.minutely && data.minutely.rain && data.minutely.rain.length > 0) {
+                    rain = data.minutely.rain[0];
+                } else if (data.hourly && data.hourly.rain && data.hourly.rain.length > idx) {
+                    rain = data.hourly.rain[idx];
                 }
-                document.getElementById("rain").textContent =
-                    "Rain: " + rain + " mm";
-            }
 
-            catch (err) {
+                document.getElementById("rain").textContent = "Rain: " + rain + " mm";
+
+            } catch (err) {
+                console.error("Weather error:", err);
                 document.getElementById("temp").innerText = "Error";
                 document.getElementById("uv").innerText = "Error";
                 document.getElementById("rain").innerText = "Error";
             }
         }
 
-
         navigator.geolocation.getCurrentPosition(pos => {
-            const { latitude, longitude } = pos.coords;
-            setInterval(() => {loadWeather(latitude, longitude);},1000)
+            const latitude = pos.coords.latitude;
+            const longitude = pos.coords.longitude;
+
+            loadWeather(latitude, longitude);
+            setInterval(() => { loadWeather(latitude, longitude); }, 60000);
+
         }, err => {
             console.error("Geolocation error:", err);
 
             loadWeather(-38.1, 175.3);
+            setInterval(() => { loadWeather(-38.1, 175.3); }, 60000);
         });
 
         setInterval(() => {
-    fetch("https://cloudify-news.onrender.com/ping")
-        .catch(() => {});
-}, 600000);
+            fetch("https://cloudify-news.onrender.com/ping")
+                .catch(() => { });
+        }, 600000);
     </script>
 
 </body>
