@@ -10,9 +10,8 @@ LON = 175.3
 
 @app.route("/weather")
 def weather():
-
-    lat = request.args.get("lat", LAT)
-    lon = request.args.get("lon", LON)
+    lat = float(request.args.get("lat", LAT))
+    lon = float(request.args.get("lon", LON))
 
     url_forecast = (
         "https://api.open-meteo.com/v1/forecast"
