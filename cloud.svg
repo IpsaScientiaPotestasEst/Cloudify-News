@@ -1,43 +1,45 @@
-<svg width="480" height="300" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+<svg width="540" height="340" viewBox="0 0 540 340" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Main soft cloud gradient -->
-    <radialGradient id="realCloudMain" cx="50%" cy="45%" r="70%">
+    <!-- Soft volumetric cloud gradient -->
+    <radialGradient id="realCloudMain" cx="50%" cy="40%" r="70%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#f4f7ff"/>
-      <stop offset="100%" stop-color="#dce6f5"/>
+      <stop offset="65%" stop-color="#f3f6ff"/>
+      <stop offset="100%" stop-color="#d8e3f3"/>
     </radialGradient>
 
-    <!-- Subtle darker underside -->
-    <radialGradient id="realCloudShadow" cx="50%" cy="70%" r="90%">
+    <!-- Gentle underside shading -->
+    <radialGradient id="realCloudShadow" cx="50%" cy="75%" r="90%">
       <stop offset="0%" stop-color="rgba(0,0,0,0.12)"/>
       <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
     </radialGradient>
   </defs>
 
-  <!-- Realistic cloud silhouette -->
+  <!-- Middle-style cloud silhouette -->
   <g transform="translate(40,40)">
     <path
-      d="M140 160
-         C110 160,90 130,100 110
-         C115 75,160 70,190 95
-         C210 60,270 65,300 110
-         C330 105,360 130,355 160
-         C360 200,330 225,280 225
-         L180 225
-         C155 225,140 200,140 160Z"
+      d="
+        M180 220
+        C140 220,115 185,130 150
+        C150 110,200 105,235 135
+        C260 85,330 90,360 150
+        C395 145,425 175,420 210
+        C425 250,395 275,340 275
+        L230 275
+        C200 275,180 250,180 220Z"
       fill="url(#realCloudMain)"
     />
 
     <!-- Soft underside shading -->
     <path
-      d="M140 160
-         C110 160,90 130,100 110
-         C115 75,160 70,190 95
-         C210 60,270 65,300 110
-         C330 105,360 130,355 160
-         C360 200,330 225,280 225
-         L180 225
-         C155 225,140 200,140 160Z"
+      d="
+        M180 220
+        C140 220,115 185,130 150
+        C150 110,200 105,235 135
+        C260 85,330 90,360 150
+        C395 145,425 175,420 210
+        C425 250,395 275,340 275
+        L230 275
+        C200 275,180 250,180 220Z"
       fill="url(#realCloudShadow)"
       opacity="0.35"
     />
