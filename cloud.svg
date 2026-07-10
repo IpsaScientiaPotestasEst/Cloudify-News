@@ -1,51 +1,18 @@
 <svg width="600" height="360" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Classic soft cloud gradient -->
-    <radialGradient id="cloudMain" cx="50%" cy="40%" r="70%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#eef4ff"/>
-      <stop offset="100%" stop-color="#d4ddef"/>
-    </radialGradient>
-
-    <!-- Gentle underside shading -->
-    <radialGradient id="cloudDepth" cx="50%" cy="75%" r="90%">
-      <stop offset="0%" stop-color="rgba(0,0,0,0.12)"/>
-      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
-    </radialGradient>
-  </defs>
-
-  <!-- Stereotypical cloud silhouette -->
+  <!-- Stereotypical cloud: simple, safe for GitHub -->
   <path
     d="
       M180 220
-      C150 220,130 190,140 165   <!-- Left puff -->
-      C155 140,190 130,215 150   <!-- Left-mid rise -->
+      C150 220,130 190,150 165
+      C160 140,200 130,230 150
 
-      C230 110,290 105,320 150   <!-- Big center puff -->
+      C240 110,300 105,330 150
+      C360 130,400 135,420 165
 
-      C350 130,390 135,410 165   <!-- Right-mid rise -->
-      C425 190,410 220,380 230   <!-- Right puff -->
-
-      L240 230                    <!-- Bottom line -->
-      C210 230,190 240,180 220Z"
-    fill="url(#cloudMain)"
-  />
-
-  <!-- Depth shading -->
-  <path
-    d="
-      M180 220
-      C150 220,130 190,140 165
-      C155 140,190 130,215 150
-
-      C230 110,290 105,320 150
-
-      C350 130,390 135,410 165
-      C425 190,410 220,380 230
+      C440 190,420 220,390 230
 
       L240 230
       C210 230,190 240,180 220Z"
-    fill="url(#cloudDepth)"
-    opacity="0.30"
+    fill="#e8f0ff"
   />
 </svg>
