@@ -1,21 +1,28 @@
 <svg width="540" height="340" viewBox="0 0 540 340" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Soft volumetric cloud gradient -->
-    <radialGradient id="realCloudMain" cx="50%" cy="40%" r="70%">
+    <!-- Main soft cloud gradient (cool bluish-white) -->
+    <radialGradient id="cloudMain" cx="50%" cy="40%" r="70%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="65%" stop-color="#f3f6ff"/>
-      <stop offset="100%" stop-color="#d8e3f3"/>
+      <stop offset="50%" stop-color="#eef4ff"/>
+      <stop offset="100%" stop-color="#d0ddf0"/>
     </radialGradient>
 
-    <!-- Gentle underside shading -->
-    <radialGradient id="realCloudShadow" cx="50%" cy="75%" r="90%">
-      <stop offset="0%" stop-color="rgba(0,0,0,0.12)"/>
+    <!-- Subtle top highlight -->
+    <radialGradient id="cloudHighlight" cx="50%" cy="25%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <!-- Gentle underside shading (no shadow underneath) -->
+    <radialGradient id="cloudDepth" cx="50%" cy="75%" r="90%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.10)"/>
       <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
     </radialGradient>
   </defs>
 
-  <!-- Middle-style cloud silhouette -->
+  <!-- Cloud shape matching your reference -->
   <g transform="translate(40,40)">
+    <!-- Base cloud body -->
     <path
       d="
         M180 220
@@ -26,10 +33,10 @@
         C425 250,395 275,340 275
         L230 275
         C200 275,180 250,180 220Z"
-      fill="url(#realCloudMain)"
+      fill="url(#cloudMain)"
     />
 
-    <!-- Soft underside shading -->
+    <!-- Soft top highlight -->
     <path
       d="
         M180 220
@@ -40,8 +47,23 @@
         C425 250,395 275,340 275
         L230 275
         C200 275,180 250,180 220Z"
-      fill="url(#realCloudShadow)"
-      opacity="0.35"
+      fill="url(#cloudHighlight)"
+      opacity="0.55"
+    />
+
+    <!-- Gentle underside depth (no ground shadow) -->
+    <path
+      d="
+        M180 220
+        C140 220,115 185,130 150
+        C150 110,200 105,235 135
+        C260 85,330 90,360 150
+        C395 145,425 175,420 210
+        C425 250,395 275,340 275
+        L230 275
+        C200 275,180 250,180 220Z"
+      fill="url(#cloudDepth)"
+      opacity="0.30"
     />
   </g>
 </svg>
