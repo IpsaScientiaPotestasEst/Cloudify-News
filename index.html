@@ -6,8 +6,7 @@
     <title>Cloudify News</title>
 
     <style>
-        html,
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -16,7 +15,6 @@
             position: relative;
             font-family: "Segoe UI", Arial, sans-serif;
         }
-
         .ripple {
             position: fixed;
             top: 50%;
@@ -32,24 +30,11 @@
             filter: blur(2px);
             z-index: 0;
         }
-
         @keyframes pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 1;
-            }
-
-            65% {
-                transform: translate(-50%, -50%) scale(3.4);
-                opacity: 0.45;
-            }
-
-            100% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 1;
-            }
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            65% { transform: translate(-50%, -50%) scale(3.4); opacity: 0.45; }
+            100% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
         }
-
         #weather-card {
             width: 100%;
             max-width: 900px;
@@ -62,22 +47,18 @@
             position: relative;
             z-index: 2;
         }
-
         #time {
             font-size: 60px;
             font-weight: 800;
             color: #ffffff;
             text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
-
-
         .circle-row {
             display: flex;
             gap: 40px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .weather-circle {
             width: 260px;
             height: 260px;
@@ -91,7 +72,6 @@
             gap: 12px;
             position: relative;
         }
-
         .weather-circle::before {
             content: "";
             position: absolute;
@@ -102,7 +82,6 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.75), transparent);
             border-radius: 50%;
         }
-
         .weather-circle::after {
             content: "";
             position: absolute;
@@ -113,30 +92,18 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent);
             border-radius: 50%;
         }
-
         .section-title {
             font-size: 22px;
             font-weight: 700;
             color: #3c4a63;
         }
-
         .backText {
             font-size: 36px;
             font-weight: 800;
         }
-
-        #temp {
-            color: #e63946;
-        }
-
-        #uv {
-            color: #5a00d9;
-            font-size: 29px !important;
-        }
-
-        #rain {
-            color: #0353d3;
-        }
+        #temp { color: #e63946; }
+        #uv { color: #5a00d9; font-size: 29px !important; }
+        #rain { color: #0353d3; }
     </style>
 
 </head>
@@ -175,14 +142,12 @@
         }
 
         function time() {
-            now = new Date();
-
+            let now = new Date();
             let t = now.toLocaleTimeString("en-NZ", {
                 hour: "numeric",
                 minute: "2-digit",
                 hour12: true
             });
-
             document.getElementById("time").textContent = t;
         }
 
@@ -193,48 +158,39 @@
                 const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
 
-
                 let temp = "N/A";
                 if (data.current && typeof data.current.temperature !== "undefined") {
                     temp = data.current.temperature;
-                    document.getElementById("temp").textContent = temp + "°C";
                 }
-
                 document.getElementById("temp").textContent = temp + "°C";
-                
-                const now = new Date();
-                const nowISO = now.toISOString().slice(0, 13);
+
+                let now = new Date();
+                let y = now.getFullYear();
+                let m = String(now.getMonth() + 1).padStart(2, "0");
+                let d = String(now.getDate()).padStart(2, "0");
+                let h = String(now.getHours()).padStart(2, "0");
+                let nowKey = `${y}-${m}-${d}T${h}:00`;
 
                 let idx = -1;
                 if (data.hourly && data.hourly.time && data.hourly.time.length > 0) {
-                    idx = data.hourly.time.findIndex(t => t.startsWith(nowISO));
+                    idx = data.hourly.time.indexOf(nowKey);
                 }
                 if (idx === -1) {
                     idx = 0;
                 }
 
-
                 let uv = 0;
-
-               
                 if (data.hourly && data.hourly.radiation && data.hourly.radiation.length > idx) {
                     uv = data.hourly.radiation[idx] / 100;
                 }
 
                 let uvText = "";
-                if (uv <= 0.2) {
-                    uvText = "No light";
-                } else if (uv <= 2) {
-                    uvText = "Low light";
-                } else if (uv <= 5) {
-                    uvText = "Moderate light";
-                } else if (uv <= 7) {
-                    uvText = "High light";
-                } else if (uv <= 10) {
-                    uvText = "Very high light";
-                } else {
-                    uvText = "Extreme light";
-                }
+                if (uv <= 0.2) uvText = "No light";
+                else if (uv <= 2) uvText = "Low light";
+                else if (uv <= 5) uvText = "Moderate light";
+                else if (uv <= 7) uvText = "High light";
+                else if (uv <= 10) uvText = "Very high light";
+                else uvText = "Extreme light";
 
                 document.getElementById("uv").textContent = uvText;
 
@@ -248,7 +204,6 @@
                 document.getElementById("rain").textContent = "Rain: " + rain + " mm";
 
             } catch (err) {
-                console.error("Weather error:", err);
                 document.getElementById("temp").innerText = "Error";
                 document.getElementById("uv").innerText = "Error";
                 document.getElementById("rain").innerText = "Error";
@@ -258,21 +213,17 @@
         navigator.geolocation.getCurrentPosition(pos => {
             const latitude = pos.coords.latitude;
             const longitude = pos.coords.longitude;
-
             loadWeather(latitude, longitude);
             setInterval(() => { loadWeather(latitude, longitude); }, 60000);
-
         }, err => {
-            console.error("Geolocation error:", err);
-
             loadWeather(-38.1, 175.3);
             setInterval(() => { loadWeather(-38.1, 175.3); }, 60000);
         });
 
         setInterval(() => {
-            fetch("https://cloudify-news.onrender.com/ping")
-                .catch(() => { });
+            fetch("https://cloudify-news.onrender.com/ping").catch(() => {});
         }, 600000);
+
     </script>
 
 </body>
