@@ -1,45 +1,45 @@
-<svg width="420" height="260" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+<svg width="480" height="300" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Soft fluffy gradient -->
-    <radialGradient id="fluffyGrad" cx="50%" cy="45%" r="65%">
+    <!-- Main soft cloud gradient -->
+    <radialGradient id="realCloudMain" cx="50%" cy="45%" r="70%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="70%" stop-color="#f2f6ff"/>
-      <stop offset="100%" stop-color="#e3ecfa"/>
+      <stop offset="60%" stop-color="#f4f7ff"/>
+      <stop offset="100%" stop-color="#dce6f5"/>
     </radialGradient>
 
-    <!-- Gentle depth shadow -->
-    <radialGradient id="depthShadow" cx="50%" cy="60%" r="80%">
-      <stop offset="0%" stop-color="rgba(0,0,0,0.10)"/>
+    <!-- Subtle darker underside -->
+    <radialGradient id="realCloudShadow" cx="50%" cy="70%" r="90%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.12)"/>
       <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
     </radialGradient>
   </defs>
 
-  <!-- Cloud shape (smooth left side, no bump) -->
+  <!-- Realistic cloud silhouette -->
   <g transform="translate(40,40)">
     <path
-      d="M120 140
-         C90 140,70 115,78 95
-         C90 60,130 55,160 80
-         C190 50,250 55,275 95
-         C310 95,335 120,330 150
-         C335 185,310 210,260 210
-         L160 210
-         C135 210,120 185,120 140Z"
-      fill="url(#fluffyGrad)"
+      d="M140 160
+         C110 160,90 130,100 110
+         C115 75,160 70,190 95
+         C210 60,270 65,300 110
+         C330 105,360 130,355 160
+         C360 200,330 225,280 225
+         L180 225
+         C155 225,140 200,140 160Z"
+      fill="url(#realCloudMain)"
     />
 
-    <!-- Soft internal shading -->
+    <!-- Soft underside shading -->
     <path
-      d="M120 140
-         C90 140,70 115,78 95
-         C90 60,130 55,160 80
-         C190 50,250 55,275 95
-         C310 95,335 120,330 150
-         C335 185,310 210,260 210
-         L160 210
-         C135 210,120 185,120 140Z"
-      fill="url(#depthShadow)"
-      opacity="0.25"
+      d="M140 160
+         C110 160,90 130,100 110
+         C115 75,160 70,190 95
+         C210 60,270 65,300 110
+         C330 105,360 130,355 160
+         C360 200,330 225,280 225
+         L180 225
+         C155 225,140 200,140 160Z"
+      fill="url(#realCloudShadow)"
+      opacity="0.35"
     />
   </g>
 </svg>
