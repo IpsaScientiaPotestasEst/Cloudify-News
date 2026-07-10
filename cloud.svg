@@ -1,57 +1,45 @@
-<svg width="160" height="110" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
-  <!-- 3D-style cloud -->
+<svg width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Soft shading gradient -->
-    <radialGradient id="cloudShade" cx="50%" cy="40%" r="70%">
+    <!-- Soft fluffy gradient -->
+    <radialGradient id="fluffyGrad" cx="50%" cy="45%" r="65%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="70%" stop-color="#e6f0ff"/>
-      <stop offset="100%" stop-color="#d0e0f5"/>
+      <stop offset="70%" stop-color="#f2f6ff"/>
+      <stop offset="100%" stop-color="#e3ecfa"/>
     </radialGradient>
 
-    <!-- Slight inner shadow -->
-    <radialGradient id="innerShadow" cx="50%" cy="60%" r="80%">
-      <stop offset="0%" stop-color="rgba(0,0,0,0.15)"/>
+    <!-- Gentle depth shadow -->
+    <radialGradient id="depthShadow" cx="50%" cy="60%" r="80%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.10)"/>
       <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
     </radialGradient>
   </defs>
 
-  <!-- Cloud body -->
+  <!-- Cloud shape -->
   <g transform="translate(20,20)">
     <path
-      d="M30 40
-         C20 40,15 30,22 22
-         C25 10,40 8,50 16
-         C60 4,80 6,88 20
-         C100 18,110 28,108 40
-         C110 52,100 60,85 60
-         L45 60
-         C35 60,30 52,30 40Z"
-      fill="url(#cloudShade)"
+      d="M40 55
+         C25 55,18 42,26 33
+         C30 18,48 15,60 25
+         C70 10,95 12,105 30
+         C120 28,130 40,128 55
+         C130 70,118 80,95 80
+         L55 80
+         C45 80,40 70,40 55Z"
+      fill="url(#fluffyGrad)"
     />
 
-    <!-- Inner shadow for depth -->
+    <!-- Soft internal shading -->
     <path
-      d="M30 40
-         C20 40,15 30,22 22
-         C25 10,40 8,50 16
-         C60 4,80 6,88 20
-         C100 18,110 28,108 40
-         C110 52,100 60,85 60
-         L45 60
-         C35 60,30 52,30 40Z"
-      fill="url(#innerShadow)"
-      opacity="0.35"
-    />
-
-    <!-- Glossy highlight -->
-    <path
-      d="M45 28
-         C55 20,75 20,85 32"
-      stroke="rgba(255,255,255,0.7)"
-      stroke-width="6"
-      stroke-linecap="round"
-      fill="none"
-      opacity="0.6"
+      d="M40 55
+         C25 55,18 42,26 33
+         C30 18,48 15,60 25
+         C70 10,95 12,105 30
+         C120 28,130 40,128 55
+         C130 70,118 80,95 80
+         L55 80
+         C45 80,40 70,40 55Z"
+      fill="url(#depthShadow)"
+      opacity="0.25"
     />
   </g>
 </svg>
