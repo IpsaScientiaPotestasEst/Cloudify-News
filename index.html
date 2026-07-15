@@ -7,7 +7,8 @@
     <link rel="icon" href="Acloud.png">
 
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -16,6 +17,7 @@
             position: relative;
             font-family: "Segoe UI", Arial, sans-serif;
         }
+
         .ripple {
             position: fixed;
             top: 50%;
@@ -31,11 +33,24 @@
             filter: blur(2px);
             z-index: 0;
         }
+
         @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-            65% { transform: translate(-50%, -50%) scale(3.4); opacity: 0.45; }
-            100% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+
+            65% {
+                transform: translate(-50%, -50%) scale(3.4);
+                opacity: 0.45;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
         }
+
         #weather-card {
             width: 100%;
             max-width: 900px;
@@ -48,18 +63,21 @@
             position: relative;
             z-index: 2;
         }
+
         #time {
             font-size: 60px;
             font-weight: 800;
             color: #ffffff;
             text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
+
         .circle-row {
             display: flex;
             gap: 40px;
             justify-content: center;
             flex-wrap: wrap;
         }
+
         .weather-circle {
             width: 260px;
             height: 260px;
@@ -73,6 +91,7 @@
             gap: 12px;
             position: relative;
         }
+
         .weather-circle::before {
             content: "";
             position: absolute;
@@ -83,6 +102,7 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.75), transparent);
             border-radius: 50%;
         }
+
         .weather-circle::after {
             content: "";
             position: absolute;
@@ -93,18 +113,30 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent);
             border-radius: 50%;
         }
+
         .section-title {
             font-size: 22px;
             font-weight: 700;
             color: #3c4a63;
         }
+
         .backText {
             font-size: 36px;
             font-weight: 800;
         }
-        #temp { color: #e63946; }
-        #uv { color: #5a00d9; font-size: 29px !important; }
-        #rain { color: #0353d3; }
+
+        #temp {
+            color: #e63946;
+        }
+
+        #uv {
+            color: #5a00d9;
+            font-size: 29px !important;
+        }
+
+        #rain {
+            color: #0353d3;
+        }
     </style>
 
 </head>
@@ -138,8 +170,20 @@
 
     <script>
 
+
         if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
             document.body.innerHTML = "<h2>This app is not available on mobile devices.</h2>";
+        }
+
+
+        function BugTime(context = "") {
+            const now = new Date();
+            const t = now.toLocaleTimeString("en-NZ", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+            });
+            console.log("Bugged at:", t);
         }
 
         function time() {
@@ -156,20 +200,27 @@
 
         async function loadWeather(lat, lon) {
             try {
+
                 const res = await fetch(`https://cloudify-news.onrender.com/weather?lat=${lat}&lon=${lon}`);
                 const data = await res.json();
+
 
                 let temp = "N/A";
                 if (data.current && typeof data.current.temperature !== "undefined") {
                     temp = data.current.temperature;
+                } else {
+                    BugTime();
                 }
                 document.getElementById("temp").textContent = temp + "°C";
+
+
 
                 let now = new Date();
                 let y = now.getFullYear();
                 let m = String(now.getMonth() + 1).padStart(2, "0");
                 let d = String(now.getDate()).padStart(2, "0");
                 let h = String(now.getHours()).padStart(2, "0");
+
                 let nowKey = `${y}-${m}-${d}T${h}:00`;
 
                 let idx = -1;
@@ -177,12 +228,17 @@
                     idx = data.hourly.time.indexOf(nowKey);
                 }
                 if (idx === -1) {
+                    BugTime();
                     idx = 0;
                 }
+
+
 
                 let uv = 0;
                 if (data.hourly && data.hourly.radiation && data.hourly.radiation.length > idx) {
                     uv = data.hourly.radiation[idx] / 100;
+                } else {
+                    BugTime();
                 }
 
                 let uvText = "";
@@ -195,16 +251,25 @@
 
                 document.getElementById("uv").textContent = uvText;
 
+
+
                 let rain = 0;
+
                 if (data.minutely && data.minutely.rain && data.minutely.rain.length > 0) {
                     rain = data.minutely.rain[0];
                 } else if (data.hourly && data.hourly.rain && data.hourly.rain.length > idx) {
                     rain = data.hourly.rain[idx];
+                } else {
+                    BugTime();
                 }
 
                 document.getElementById("rain").textContent = "Rain: " + rain + " mm";
 
+
             } catch (err) {
+
+                BugTime("Weather fetch failed");
+
                 document.getElementById("temp").innerText = "Error";
                 document.getElementById("uv").innerText = "Error";
                 document.getElementById("rain").innerText = "Error";
@@ -222,7 +287,7 @@
         });
 
         setInterval(() => {
-            fetch("https://cloudify-news.onrender.com/ping").catch(() => {});
+            fetch("https://cloudify-news.onrender.com/ping").catch(() => { });
         }, 600000);
 
     </script>
